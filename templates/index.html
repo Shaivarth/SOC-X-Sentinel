@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC-X | Security Operations Center</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="var(--cyan)" stroke-width="1.5" fill="none"/>
+                <polygon points="14,7 21,11 21,17 14,21 7,17 7,11" fill="var(--cyan)" opacity="0.15"/>
+                <circle cx="14" cy="14" r="3" fill="var(--cyan)"/>
+            </svg>
+        </div>
+        <div class="logo-text">
+            <span class="logo-name">SOC-X</span>
+            <span class="logo-sub">SENTINEL PLATFORM</span>
+        </div>
+    </div>
+
+    <div class="sidebar-section-label">NAVIGATION</div>
+    <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="dashboard">
+            <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <rect x="1" y="1" width="6" height="6" rx="1"/>
+                    <rect x="9" y="1" width="6" height="6" rx="1"/>
+                    <rect x="1" y="9" width="6" height="6" rx="1"/>
+                    <rect x="9" y="9" width="6" height="6" rx="1"/>
+                </svg>
+            </span>
+            <span>Overview</span>
+            <span class="nav-badge">LIVE</span>
+        </a>
+        <a href="#alerts-section" class="nav-item" data-section="alerts">
+            <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 1L1 13h14L8 1zm0 3l4.5 7.5h-9L8 4z"/>
+                    <rect x="7" y="8" width="2" height="3"/>
+                    <circle cx="8" cy="12" r="1"/>
+                </svg>
+            </span>
+            <span>Alerts</span>
+            <span class="nav-count" id="sidebar-alert-count">{{ total_alerts }}</span>
+        </a>
+        <a href="#analytics-section" class="nav-item" data-section="analytics">
+            <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <rect x="1" y="9" width="3" height="6"/>
+                    <rect x="6" y="5" width="3" height="10"/>
+                    <rect x="11" y="1" width="3" height="14"/>
+                </svg>
+            </span>
+            <span>Analytics</span>
+        </a>
+        <a href="#" class="nav-item" data-section="intel">
+            <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <path d="M8 2 Q14 8 8 14 Q2 8 8 2Z" fill="currentColor" opacity="0.4"/>
+                    <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1"/>
+                </svg>
+            </span>
+            <span>Threat Intel</span>
+        </a>
+        <a href="#" class="nav-item" data-section="incidents">
+            <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M14 2H2v12h12V2zm-2 9H4v-1h8v1zm0-3H4V7h8v1zm0-3H4V4h8v1z"/>
+                </svg>
+            </span>
+            <span>Incidents</span>
+        </a>
+        <a href="#" class="nav-item" data-section="logs">
+            <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <rect x="2" y="1" width="12" height="14" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <line x1="5" y1="5" x2="11" y2="5" stroke="currentColor" stroke-width="1"/>
+                    <line x1="5" y1="8" x2="11" y2="8" stroke="currentColor" stroke-width="1"/>
+                    <line x1="5" y1="11" x2="9" y2="11" stroke="currentColor" stroke-width="1"/>
+                </svg>
+            </span>
+            <span>Log Explorer</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-section-label" style="margin-top:24px">SYSTEM</div>
+    <nav class="sidebar-nav">
+        <a href="#" class="nav-item" data-section="settings">
+            <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <circle cx="8" cy="8" r="2.5"/>
+                    <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+            </span>
+            <span>Settings</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="analyst-card">
+            <div class="analyst-avatar">S</div>
+            <div class="analyst-info">
+                <span class="analyst-name">shaivarth</span>
+                <span class="analyst-role">SOC Analyst L1</span>
+            </div>
+            <div class="analyst-status-dot"></div>
+        </div>
+    </div>
+
+    <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+            <path d="M9 2L4 7l5 5"/>
+        </svg>
+    </button>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-wrapper" id="mainWrapper">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="topbar-title">
+                <span class="page-title">Security Operations Center</span>
+                <div class="live-indicator">
+                    <span class="pulse-dot"></span>
+                    <span>LIVE MONITORING ACTIVE</span>
+                </div>
+            </div>
+        </div>
+        <div class="topbar-center">
+            <div class="search-bar">
+                <svg class="search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="9" y1="9" x2="13" y2="13" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                <input type="text" id="globalSearch" placeholder="Search alerts, IPs, users...">
+                <kbd>⌘K</kbd>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div class="threat-level-widget">
+                <span class="tl-label">THREAT LEVEL</span>
+                <span class="tl-value" id="threatLevelBadge">HIGH</span>
+            </div>
+            <button class="icon-btn" id="refreshBtn" title="Refresh Data">
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <path d="M1.5 7.5a6 6 0 1 0 1.2-3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M1 4l1.5 1.5L4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <div class="auto-refresh-toggle">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoRefreshToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Auto</span>
+            </div>
+            <div class="notification-btn" id="notifBtn">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 1a5 5 0 0 0-5 5v3l-1.5 2h13L13 9V6a5 5 0 0 0-5-5z"/>
+                    <path d="M6 13a2 2 0 0 0 4 0H6z"/>
+                </svg>
+                <span class="notif-badge" id="notifBadge">{{ critical }}</span>
+            </div>
+            <div class="analyst-mini">
+                <div class="analyst-avatar-sm">S</div>
+                <span>shaivarth</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- NOTIFICATION PANEL -->
+    <div class="notif-panel" id="notifPanel">
+        <div class="notif-header">
+            <span>Notifications</span>
+            <button class="notif-close" id="notifClose">✕</button>
+        </div>
+        <div class="notif-list" id="notifList">
+            {% for alert in alerts[:5] %}
+            <div class="notif-item notif-{{ alert.severity|lower }}">
+                <div class="notif-severity">{{ alert.severity }}</div>
+                <div class="notif-content">
+                    <div class="notif-title">{{ alert.alert_type }}</div>
+                    <div class="notif-meta">{{ alert.username }} · {{ alert.timestamp }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="content-area">
+
+        <!-- METRICS ROW -->
+        <section class="metrics-grid">
+            <div class="metric-card metric-total">
+                <div class="metric-glow"></div>
+                <div class="metric-header">
+                    <span class="metric-label">TOTAL ALERTS</span>
+                    <div class="metric-icon metric-icon-total">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+                            <path d="M9 1L1 6v10h5v-5h6v5h5V6L9 1z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="metricTotal">{{ total_alerts }}</div>
+                <div class="metric-sub">
+                    <span class="metric-trend up">↑ Active session</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width:100%"></div></div>
+            </div>
+
+            <div class="metric-card metric-critical">
+                <div class="metric-glow glow-red"></div>
+                <div class="metric-header">
+                    <span class="metric-label">CRITICAL</span>
+                    <div class="metric-icon metric-icon-critical">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+                            <polygon points="9,2 17,15 1,15"/>
+                            <rect x="8" y="7" width="2" height="4"/>
+                            <circle cx="9" cy="13" r="1"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value blink-if-critical" id="metricCritical">{{ critical }}</div>
+                <div class="metric-sub">
+                    <span class="metric-trend danger">⚠ Immediate action</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill red-fill" style="width: {{ ((critical / total_alerts) * 100)|int if total_alerts > 0 else 0 }}%"></div></div>
+            </div>
+
+            <div class="metric-card metric-high">
+                <div class="metric-glow glow-orange"></div>
+                <div class="metric-header">
+                    <span class="metric-label">HIGH SEVERITY</span>
+                    <div class="metric-icon metric-icon-high">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+                            <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                            <line x1="9" y1="5" x2="9" y2="10" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="9" cy="13" r="1"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="metricHigh">{{ high }}</div>
+                <div class="metric-sub">
+                    <span class="metric-trend warn">● Under investigation</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill orange-fill" ></div></div>
+            </div>
+
+            <div class="metric-card metric-medium">
+                <div class="metric-glow glow-yellow"style="width: {{ ((medium / total_alerts) * 100)|int if total_alerts > 0 else 0 }}%">></div>
+                <div class="metric-header">
+                    <span class="metric-label">MEDIUM / LOW</span>
+                    <div class="metric-icon metric-icon-medium">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+                            <rect x="2" y="10" width="3" height="6"/>
+                            <rect x="7" y="6" width="3" height="10"/>
+                            <rect x="12" y="2" width="3" height="14"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="metricMedium">{{ medium }}</div>
+                <div class="metric-sub">
+                    <span class="metric-trend ok">✓ Monitored</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill yellow-fill" style="width: {{ ((medium / total_alerts) * 100)|int if total_alerts > 0 else 0 }}%"></div></div>
+            </div>
+
+            <div class="metric-card metric-attackers">
+                <div class="metric-glow glow-purple"></div>
+                <div class="metric-header">
+                    <span class="metric-label">UNIQUE SOURCES</span>
+                    <div class="metric-icon metric-icon-purple">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+                            <circle cx="9" cy="6" r="3"/>
+                            <path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="metricAttackers">{{ unique_attackers }}</div>
+                <div class="metric-sub">
+                    <span class="metric-trend">● Tracked entities</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill purple-fill" style="width:60%"></div></div>
+            </div>
+        </section>
+
+        <!-- ANALYTICS SECTION -->
+        <section id="analytics-section" class="analytics-section">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <div class="section-accent"></div>
+                    <h2 class="section-title">Threat Analytics</h2>
+                </div>
+                <div class="section-controls">
+                    <select class="ctrl-select" id="chartTimeRange">
+                        <option>All Time</option>
+                        <option>Last 24h</option>
+                        <option>Last 7d</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card chart-main">
+                    <div class="chart-card-header">
+                        <span class="chart-title">Alert Activity Timeline</span>
+                        <div class="chart-dots">
+                            <span class="dot dot-cyan"></span>
+                            <span class="dot dot-red"></span>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="alertTimelineChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card chart-side">
+                    <div class="chart-card-header">
+                        <span class="chart-title">Severity Distribution</span>
+                    </div>
+                    <div class="chart-body chart-body-doughnut">
+                        <canvas id="severityDonutChart"></canvas>
+                        <div class="donut-center-label">
+                            <span id="donutTotal">{{ total_alerts }}</span>
+                            <span>ALERTS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card chart-bar">
+                    <div class="chart-card-header">
+                        <span class="chart-title">Attack Vector Breakdown</span>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="attackVectorChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card chart-line">
+                    <div class="chart-card-header">
+                        <span class="chart-title">Failed Login Rate</span>
+                        <span class="chart-badge-live">LIVE</span>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="liveEventChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALERTS SECTION -->
+        <section id="alerts-section" class="alerts-section">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <div class="section-accent"></div>
+                    <h2 class="section-title">Live Alert Feed</h2>
+                    <span class="live-dot-inline"></span>
+                </div>
+                <div class="section-controls">
+                    <div class="filter-bar">
+                        <button class="filter-btn active" data-filter="ALL">ALL</button>
+                        <button class="filter-btn filter-critical" data-filter="CRITICAL">CRITICAL</button>
+                        <button class="filter-btn filter-high" data-filter="HIGH">HIGH</button>
+                        <button class="filter-btn filter-medium" data-filter="MEDIUM">MEDIUM</button>
+                        <button class="filter-btn filter-low" data-filter="LOW">LOW</button>
+                    </div>
+                    <select class="ctrl-select" id="sortSelect">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="severity">By Severity</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Alert Search -->
+            <div class="alert-search-bar">
+                <input type="text" id="alertSearch" placeholder="Filter by username, IP, alert type...">
+                <span class="alert-count-label">Showing <span id="visibleCount">{{ total_alerts }}</span> of {{ total_alerts }} alerts</span>
+            </div>
+
+            <!-- Alert Table Header -->
+            <div class="alert-table-header">
+                <span>SEVERITY</span>
+                <span>ALERT TYPE</span>
+                <span>USER / SOURCE</span>
+                <span>TIMESTAMP</span>
+                <span>ACTION</span>
+            </div>
+
+            <!-- Alert Feed -->
+            <div class="alert-feed" id="alertFeed">
+                {% for alert in alerts %}
+                <div class="alert-row severity-{{ alert.severity|lower }}"
+                     data-severity="{{ alert.severity }}"
+                     data-username="{{ alert.username }}"
+                     data-type="{{ alert.alert_type }}"
+                     data-timestamp="{{ alert.timestamp }}">
+
+                    <div class="alert-row-severity">
+                        <span class="sev-badge sev-{{ alert.severity|lower }}">
+                            {% if alert.severity == 'CRITICAL' %}<span class="sev-blink">●</span>{% endif %}
+                            {{ alert.severity }}
+                        </span>
+                    </div>
+
+                    <div class="alert-row-type">
+                        <span class="alert-type-icon">⚡</span>
+                        <span class="alert-type-text">{{ alert.alert_type }}</span>
+                    </div>
+
+                    <div class="alert-row-user">
+                        <div class="user-chip">
+                            <span class="user-initial">{{ alert.username[0]|upper if alert.username else '?' }}</span>
+                            <span class="user-name">{{ alert.username }}</span>
+                        </div>
+                    </div>
+
+                    <div class="alert-row-time">
+                        <span class="ts-text">{{ alert.timestamp }}</span>
+                    </div>
+
+                    <div class="alert-row-action">
+                        <button class="expand-btn" data-idx="{{ loop.index }}">Details</button>
+                    </div>
+
+                    <!-- Expandable Detail Panel -->
+                    <div class="alert-detail-panel" id="detail-{{ loop.index }}">
+                        <div class="detail-grid">
+                            <div class="detail-field">
+                                <span class="detail-label">Alert ID</span>
+                                <span class="detail-val">#SOC-{{ "%05d"|format(loop.index) }}</span>
+                            </div>
+                            <div class="detail-field">
+                                <span class="detail-label">Severity</span>
+                                <span class="detail-val sev-{{ alert.severity|lower }}">{{ alert.severity }}</span>
+                            </div>
+                            <div class="detail-field">
+                                <span class="detail-label">Type</span>
+                                <span class="detail-val">{{ alert.alert_type }}</span>
+                            </div>
+                            <div class="detail-field">
+                                <span class="detail-label">User</span>
+                                <span class="detail-val">{{ alert.username }}</span>
+                            </div>
+                            {% if alert.source_ip %}
+                            <div class="detail-field">
+                                <span class="detail-label">Source IP</span>
+                                <span class="detail-val mono">{{ alert.source_ip }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="detail-field">
+                                <span class="detail-label">Timestamp</span>
+                                <span class="detail-val mono">{{ alert.timestamp }}</span>
+                            </div>
+                            {% if alert.attempts %}
+                            <div class="detail-field">
+                                <span class="detail-label">Attempts</span>
+                                <span class="detail-val">{{ alert.attempts }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="detail-actions">
+                            <button class="detail-action-btn action-investigate">Investigate</button>
+                            <button class="detail-action-btn action-suppress">Suppress</button>
+                            <button class="detail-action-btn action-escalate">Escalate</button>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="no-alerts">
+                    <div class="no-alerts-icon">✓</div>
+                    <div>No alerts detected</div>
+                    <div class="no-alerts-sub">System nominal — monitoring active</div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- BOTTOM GRID: Threat Intel + System Health -->
+        <section class="bottom-grid">
+            <!-- Threat Intelligence Panel -->
+            <div class="intel-panel">
+                <div class="section-header">
+                    <div class="section-title-group">
+                        <div class="section-accent accent-purple"></div>
+                        <h2 class="section-title">Threat Intelligence</h2>
+                    </div>
+                </div>
+                <div class="intel-feed">
+                    <div class="intel-item intel-critical">
+                        <div class="intel-dot"></div>
+                        <div class="intel-content">
+                            <div class="intel-title">Brute Force Campaign Detected</div>
+                            <div class="intel-meta">Multiple failed authentication attempts from tracked user patterns</div>
+                        </div>
+                        <span class="intel-time">Now</span>
+                    </div>
+                    <div class="intel-item intel-high">
+                        <div class="intel-dot"></div>
+                        <div class="intel-content">
+                            <div class="intel-title">Credential Stuffing Pattern</div>
+                            <div class="intel-meta">Sequential username enumeration detected across SSH service</div>
+                        </div>
+                        <span class="intel-time">5m</span>
+                    </div>
+                    <div class="intel-item intel-medium">
+                        <div class="intel-dot"></div>
+                        <div class="intel-content">
+                            <div class="intel-title">Anomalous Login Hours</div>
+                            <div class="intel-meta">Login activity detected outside normal business hours</div>
+                        </div>
+                        <span class="intel-time">12m</span>
+                    </div>
+                    <div class="intel-item intel-medium">
+                        <div class="intel-dot"></div>
+                        <div class="intel-content">
+                            <div class="intel-title">High Velocity Requests</div>
+                            <div class="intel-meta">Request rate exceeds baseline threshold by 340%</div>
+                        </div>
+                        <span class="intel-time">18m</span>
+                    </div>
+                    <div class="intel-item intel-low">
+                        <div class="intel-dot"></div>
+                        <div class="intel-content">
+                            <div class="intel-title">Watchlist Match</div>
+                            <div class="intel-meta">Username matched against threat actor watchlist IOCs</div>
+                        </div>
+                        <span class="intel-time">31m</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="health-panel">
+                <div class="section-header">
+                    <div class="section-title-group">
+                        <div class="section-accent accent-green"></div>
+                        <h2 class="section-title">System Health</h2>
+                    </div>
+                </div>
+                <div class="health-grid">
+                    <div class="health-item">
+                        <div class="health-label">LOG INGESTION</div>
+                        <div class="health-bar-wrap">
+                            <div class="health-bar"><div class="health-fill hf-green" style="width:92%"></div></div>
+                            <span class="health-val">92%</span>
+                        </div>
+                        <div class="health-status ok">OPERATIONAL</div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-label">DETECTION ENGINE</div>
+                        <div class="health-bar-wrap">
+                            <div class="health-bar"><div class="health-fill hf-green" style="width:100%"></div></div>
+                            <span class="health-val">100%</span>
+                        </div>
+                        <div class="health-status ok">OPERATIONAL</div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-label">ALERT PIPELINE</div>
+                        <div class="health-bar-wrap">
+                            <div class="health-bar"><div class="health-fill hf-yellow" style="width:78%"></div></div>
+                            <span class="health-val">78%</span>
+                        </div>
+                        <div class="health-status warn">DEGRADED</div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-label">RULE ENGINE</div>
+                        <div class="health-bar-wrap">
+                            <div class="health-bar"><div class="health-fill hf-green" style="width:88%"></div></div>
+                            <span class="health-val">88%</span>
+                        </div>
+                        <div class="health-status ok">OPERATIONAL</div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-label">STORAGE CAPACITY</div>
+                        <div class="health-bar-wrap">
+                            <div class="health-bar"><div class="health-fill hf-orange" style="width:67%"></div></div>
+                            <span class="health-val">67%</span>
+                        </div>
+                        <div class="health-status warn">MONITOR</div>
+                    </div>
+                </div>
+
+                <!-- Services Status -->
+                <div class="services-status">
+                    <div class="svc-item">
+                        <span class="svc-dot svc-green"></span>
+                        <span>Flask API</span>
+                        <span class="svc-ms">12ms</span>
+                    </div>
+                    <div class="svc-item">
+                        <span class="svc-dot svc-green"></span>
+                        <span>Log Parser</span>
+                        <span class="svc-ms">4ms</span>
+                    </div>
+                    <div class="svc-item">
+                        <span class="svc-dot svc-green"></span>
+                        <span>Alert Engine</span>
+                        <span class="svc-ms">8ms</span>
+                    </div>
+                    <div class="svc-item">
+                        <span class="svc-dot svc-yellow"></span>
+                        <span>Threat Feed</span>
+                        <span class="svc-ms">245ms</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- STATUS BAR -->
+    <footer class="statusbar">
+        <div class="sb-left">
+            <span class="sb-item"><span class="sb-dot green"></span>SOC-X v2.4.1</span>
+            <span class="sb-sep">|</span>
+            <span class="sb-item">Python/Flask Backend</span>
+            <span class="sb-sep">|</span>
+            <span class="sb-item">alerts.json · <span id="sbAlertCount">{{ total_alerts }}</span> records</span>
+        </div>
+        <div class="sb-right">
+            <span class="sb-item" id="sbTime"></span>
+            <span class="sb-sep">|</span>
+            <span class="sb-item"><span class="sb-dot green"></span>All systems nominal</span>
+            <span class="sb-sep">|</span>
+            <span class="sb-item">UTC+00:00</span>
+        </div>
+    </footer>
+</div>
+
+<!-- Pass Jinja data to JS -->
+<script>
+    window.SOC_DATA = {
+        total: {{ total_alerts }},
+        critical: {{ critical }},
+        high: {{ high }},
+        medium: {{ medium }},
+        low: {{ low }},
+        alerts: {{ alerts | tojson }}
+    };
+</script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<div id="toastContainer"></div>
+<div id="connectionStatus"></div>
+<div id="latencyValue"></div>
+</body>
+</html>
