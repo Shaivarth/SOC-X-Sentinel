@@ -157,31 +157,9 @@ Each generated alert includes:
 
 ## Architecture
 
-```text
-                                                ┌────────────────────┐
-                                                │  log_generator.py  │
-                                                └─────────┬──────────┘
-                                                          │
-                                                          ▼
-                                                      auth.log
-                                                          │
-                                                          ▼
-                                                ┌────────────────────┐
-                                                │  alert_engine.py   │
-                                                └─────────┬──────────┘
-                                                          │
-                                                          ▼
-                                                     alerts.json
-                                                          │
-                                                          ▼
-                                                ┌────────────────────┐
-                                                │    dashboard.py    │
-                                                └─────────┬──────────┘
-                                                          │
-                                                          ▼
-                                               Real-Time SOC Dashboard
-```
-
+<p align="center">
+  <img src="screenshots/architecture.png" width="500"/>
+</p>
 
 ---
 
