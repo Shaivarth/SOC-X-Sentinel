@@ -158,28 +158,28 @@ Each generated alert includes:
 ## Architecture
 
 ```text
-                ┌────────────────────┐
-                │  log_generator.py  │
-                └─────────┬──────────┘
-                          │
-                          ▼
-                      auth.log
-                          │
-                          ▼
-                ┌────────────────────┐
-                │  alert_engine.py   │
-                └─────────┬──────────┘
-                          │
-                          ▼
-                     alerts.json
-                          │
-                          ▼
-                ┌────────────────────┐
-                │    dashboard.py    │
-                └─────────┬──────────┘
-                          │
-                          ▼
-               Real-Time SOC Dashboard
+                                                ┌────────────────────┐
+                                                │  log_generator.py  │
+                                                └─────────┬──────────┘
+                                                          │
+                                                          ▼
+                                                      auth.log
+                                                          │
+                                                          ▼
+                                                ┌────────────────────┐
+                                                │  alert_engine.py   │
+                                                └─────────┬──────────┘
+                                                          │
+                                                          ▼
+                                                     alerts.json
+                                                          │
+                                                          ▼
+                                                ┌────────────────────┐
+                                                │    dashboard.py    │
+                                                └─────────┬──────────┘
+                                                          │
+                                                          ▼
+                                               Real-Time SOC Dashboard
 ```
 
 
