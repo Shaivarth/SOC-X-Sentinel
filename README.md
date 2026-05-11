@@ -1,6 +1,6 @@
 # SOC-X Sentinel
 
-> A real-time SOC simulation platform that detects, analyzes, and visualizes cybersecurity threats through a live SIEM-style dashboard.
+A real-time SOC simulation platform that detects, analyzes, and visualizes cybersecurity threats through a live SIEM-style dashboard.
 
 ---
 
@@ -59,7 +59,7 @@ I used VS Code Remote SSH to connect to a dedicated Ubuntu virtual machine runni
 
 ## Development Workflow
 
-The project was engineered using a professional remote development setup:
+The project was engineered using a remote development setup:
 
 ```text
 macOS Host Machine
