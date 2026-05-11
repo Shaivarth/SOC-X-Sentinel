@@ -165,20 +165,20 @@ Each generated alert includes:
 
 ## Tech Stack
 
-## Backend
+### Backend :
 
 * Python 3
 * Flask
 * JSON-based telemetry processing
 
-## Frontend
+### Frontend :
 
 * HTML5
 * CSS3
 * JavaScript
 * Chart.js
 
-## Cybersecurity Concepts
+### Security Concepts :
 
 * SIEM workflows
 * Detection engineering
