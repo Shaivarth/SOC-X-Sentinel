@@ -21,11 +21,11 @@ SOC-X Sentinel operates as a live detection pipeline with continuously generated
 
 ---
 
-## Development Environment
+# Development Environment
 
 I fully developed SOC-X Sentinel inside a dedicated Linux virtual machine environment to simulate realistic SOC engineering workflows.
 
-### Infrastructure Used
+## Infrastructure Used
 
 * Ubuntu Linux Virtual Machine
 * UTM Virtualization on macOS
@@ -33,13 +33,31 @@ I fully developed SOC-X Sentinel inside a dedicated Linux virtual machine enviro
 * VS Code Remote SSH Integration
 * Python Virtual Environment (venv)
 
-### VS Code Remote SSH Workflow
+## Linux Development Workflow
+SOC-X Sentinel was developed inside a dedicated Ubuntu virtual machine using a Linux-based security engineering workflow.
+
+
+![Linux Development Environment](screenshots/vm.png)
+
+The environment was used for:
+
+- Remote SSH development through VS Code
+- Git-based version control operations
+- Real-time dashboard execution
+- Threat telemetry generation
+- Detection engine monitoring
+- Virtualized SOC lab simulation
+
+The project structure, live services, and monitoring pipelines were managed directly from the Linux terminal environment and sometimes from VScode's multiple terminals.
+
+## VS Code Remote SSH Workflow
+I used VS Code Remote SSH to connect to a dedicated Ubuntu virtual machine running on macOS through UTM virtualization, creating an isolated Linux-based cybersecurity engineering environment for developing, testing, and managing SOC-X Sentinel.
+
 
 ![VSCode Remote SSH](screenshots/vscode-overview.png)
 
-I developed SOC-X Sentinel using VS Code Remote SSH connected to a dedicated Ubuntu virtual machine running on macOS via UTM virtualization.
 
-### Development Workflow
+## Development Workflow
 
 The project was engineered using a professional remote development setup:
 
