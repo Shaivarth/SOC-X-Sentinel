@@ -6,10 +6,10 @@ from datetime import datetime
 LOG_FILE = "../logs/auth.log"
 ALERT_FILE = "../logs/alerts.json"
 
-# Track failed attempts
+# Tracking failed attempts
 failed_attempts = defaultdict(int)
 
-# Track already processed logs
+# Tracking already processed logs
 processed_logs = set()
 
 
@@ -81,9 +81,7 @@ while True:
 
             attempts = int(data.get("ATTEMPTS", 1))
 
-            # ------------------------------------
             # Detection 1 — SSH Brute Force
-            # ------------------------------------
 
             if event == "SSH_BRUTE_FORCE":
 
@@ -103,9 +101,7 @@ while True:
 
                     failed_attempts[username] = 0
 
-            # ------------------------------------
             # Detection 2 — Password Spray
-            # ------------------------------------
 
             elif event == "PASSWORD_SPRAY":
 
@@ -119,9 +115,7 @@ while True:
                     mitre
                 )
 
-            # ------------------------------------
             # Detection 3 — User Enumeration
-            # ------------------------------------
 
             elif event == "USER_ENUMERATION":
 
@@ -135,9 +129,7 @@ while True:
                     mitre
                 )
 
-            # ------------------------------------
             # Detection 4 — Multiple Sessions
-            # ------------------------------------
 
             elif event == "MULTIPLE_SESSION_ATTEMPT":
 
@@ -151,9 +143,7 @@ while True:
                     mitre
                 )
 
-            # ------------------------------------
             # Detection 5 — Suspicious Admin Login
-            # ------------------------------------
 
             elif event == "ADMIN_LOGIN":
 
