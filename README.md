@@ -1,4 +1,4 @@
-# SOC-X Sentinel
+# Xentinel
 
 A real-time SOC simulation platform that detects, analyzes, and visualizes cybersecurity threats through a live SIEM-style dashboard.
 
@@ -6,7 +6,7 @@ A real-time SOC simulation platform that detects, analyzes, and visualizes cyber
 
 ## Overview
 
-SOC-X Sentinel is a cybersecurity-focused Security Operations Center (SOC) simulation platform built to emulate real-world blue-team monitoring workflows.
+Xentinel is a cybersecurity-focused Security Operations Center (SOC) simulation platform built to emulate real-world blue-team monitoring workflows.
 
 The project simulates:
 
@@ -17,13 +17,13 @@ The project simulates:
 * Threat severity analysis
 * Interactive SOC analyst workflows
 
-SOC-X Sentinel operates as a live detection pipeline with continuously generated telemetry and dynamic threat visualization.
+Xentinel operates as a live detection pipeline with continuously generated telemetry and dynamic threat visualization.
 
 ---
 
 # Development Environment
 
-I fully developed SOC-X Sentinel inside a dedicated Linux virtual machine environment to simulate realistic SOC engineering workflows.
+I fully developed Xentinel inside a dedicated Linux virtual machine environment to simulate realistic SOC engineering workflows.
 
 ## Infrastructure Used
 
@@ -34,7 +34,7 @@ I fully developed SOC-X Sentinel inside a dedicated Linux virtual machine enviro
 * Python Virtual Environment (venv)
 
 ## Linux Development Workflow
-SOC-X Sentinel was developed inside a dedicated Ubuntu virtual machine using a Linux-based security engineering workflow.
+Xentinel was developed inside a Ubuntu virtual machine using a Linux-based security engineering workflow.
 
 
 ![Linux Development Environment](screenshots/vm.png)
@@ -51,7 +51,7 @@ The environment was used for:
 The project structure, live services, and monitoring pipelines were managed directly from the Linux terminal environment and sometimes from VScode's multiple terminals.
 
 ## VS Code Remote SSH Workflow
-I used VS Code Remote SSH to connect to a dedicated Ubuntu virtual machine running on macOS through UTM virtualization, creating an isolated Linux-based cybersecurity engineering environment for developing, testing, and managing SOC-X Sentinel.
+I used VS Code Remote SSH to connect to a dedicated Ubuntu virtual machine running on macOS through UTM virtualization, creating an isolated Linux-based cybersecurity engineering environment for developing, testing, and managing Xentinel.
 
 
 ![VSCode Remote SSH](screenshots/vscode-overview.png)
@@ -120,7 +120,7 @@ This setup allowed:
 
 ### Detection Engineering
 
-SOC-X Sentinel currently detects:
+Xentinel currently detects:
 
 * SSH Brute Force Attacks
 * Password Spray Attacks
@@ -192,7 +192,7 @@ Each generated alert includes:
 ## Project Structure
 
 ```text
-SOC-X-Sentinel/
+Xentinel/
 │
 ├── scripts/
 │   ├── log_generator.py
@@ -226,9 +226,9 @@ SOC-X-Sentinel/
 ## Clone Repository
 
 ```bash
-git clone https://github.com/Shaivarth/SOC-X-Sentinel.git
+git clone https://github.com/Shaivarth/Xentinel.git
 
-cd SOC-X-Sentinel
+cd Xentinel
 ```
 
 ---
@@ -326,7 +326,7 @@ Future roadmap:
 
 ## Why This Project Matters
 
-I designed 'SOC-X Sentinel' to move beyond beginner cybersecurity projects and simulate actual SOC engineering concepts.
+I designed 'Xentinel' to move beyond beginner cybersecurity projects and simulate actual SOC engineering concepts.
 
 This project focuses on:
 
